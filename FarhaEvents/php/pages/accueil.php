@@ -169,15 +169,5 @@
                 <?php endforeach; ?>
             </div>
         </main>
-
-        <!-- <script>
-            const acheter = document.querySelectorAll(".acheter");
-
-            acheter.forEach(button => {
-                button.addEventListener("click", () => {
-                    window.location.href = "details.php";
-                });
-            });
-        </script> -->
     </body>
 </html>

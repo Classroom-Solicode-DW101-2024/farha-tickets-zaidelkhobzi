@@ -10,7 +10,6 @@
     $reservationId = $_GET['reservation_id'];
     $userId = $_SESSION["user"]["user_id"];
 
-    // Fetch tickets
     $query = "SELECT b.billetId, b.typeBillet, b.placeNum, e.eventTitle, ed.dateEvent
             FROM billet b
             JOIN reservation r ON b.idReservation = r.idReservation

@@ -1,49 +1,47 @@
 <?php
-session_start();
-require_once("../config/connectDB.php");
+    session_start();
+    require_once("../config/connectDB.php");
 
-// Check if user is logged in
-if (!isset($_SESSION["user"])) {
-    echo "<p>Aucun billet trouvé ou utilisateur non connecté.</p>";
-    exit;
-}
+    if (!isset($_SESSION["user"])) {
+        echo "<p>Aucun billet trouvé ou utilisateur non connecté.</p>";
+        exit;
+    }
 
-$userId = $_SESSION["user"]["user_id"];
+    $userId = $_SESSION["user"]["user_id"];
 
-// Fetch tickets from the database
-$query = "
-    SELECT 
-        b.billetId,
-        b.typeBillet AS ticketType,
-        b.placeNum AS quantity,
-        ev.eventTitle,
-        ed.dateEvent,
-        ed.timeEvent,
-        ed.NumSalle AS numSalle,
-        CASE 
-            WHEN b.typeBillet = 'Normal' THEN ev.TariffNormal 
-            ELSE ev.TariffReduit 
-        END AS ticketPrice
-    FROM 
-        billet b
-    JOIN 
-        reservation r ON b.idReservation = r.idReservation
-    JOIN 
-        edition ed ON r.editionId = ed.editionId
-    JOIN 
-        evenement ev ON ed.eventId = ev.eventId
-    WHERE 
-        r.idUser = :idUser
-";
-$stmt = $pdo->prepare($query);
-$stmt->bindParam(":idUser", $userId);
-$stmt->execute();
-$tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $query = "
+        SELECT 
+            b.billetId,
+            b.typeBillet AS ticketType,
+            b.placeNum AS quantity,
+            ev.eventTitle,
+            ed.dateEvent,
+            ed.timeEvent,
+            ed.NumSalle AS numSalle,
+            CASE 
+                WHEN b.typeBillet = 'Normal' THEN ev.TariffNormal 
+                ELSE ev.TariffReduit 
+            END AS ticketPrice
+        FROM 
+            billet b
+        JOIN 
+            reservation r ON b.idReservation = r.idReservation
+        JOIN 
+            edition ed ON r.editionId = ed.editionId
+        JOIN 
+            evenement ev ON ed.eventId = ev.eventId
+        WHERE 
+            r.idUser = :idUser
+    ";
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(":idUser", $userId);
+    $stmt->execute();
+    $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (empty($tickets)) {
-    echo "<p>Aucun billet trouvé pour cet utilisateur.</p>";
-    exit;
-}
+    if (empty($tickets)) {
+        echo "<p>Aucun billet trouvé pour cet utilisateur.</p>";
+        exit;
+    }
 ?>
 
 <!DOCTYPE html>

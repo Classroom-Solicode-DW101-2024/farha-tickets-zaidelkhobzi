@@ -10,7 +10,6 @@
     $reservationId = $_GET['reservation_id'];
     $userId = $_SESSION["user"]["user_id"];
 
-    // Fetch invoice details
     $query = "SELECT r.idReservation, e.eventTitle, ed.dateEvent, (r.qteBilletsNormal * ev.TariffNormal + r.qteBilletsReduit * ev.TariffReduit) AS total
         FROM reservation r
         JOIN edition ed ON r.editionId = ed.editionId

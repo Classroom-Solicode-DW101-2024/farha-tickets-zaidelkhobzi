@@ -89,7 +89,6 @@
                                         <button type="button" class="quantity-btn increase-btn">+</button>
                                     </div>
                                     <?php if ($capSalle > 0): ?>
-                                        <!-- <p>Capacité maximale de la salle : <?= $capSalle ?> places</p> -->
                                     <?php else: ?>
                                         <p>Événement non trouvé ou capacité indisponible.</p>
                                     <?php endif; ?>
@@ -229,9 +228,6 @@
                 document.querySelector('.close-btn').addEventListener('click', function() {
                     popup.classList.remove('active');
                 });
-                // window.addEventListener('click', function() {
-                //     popup.classList.remove('active');
-                // });
                 
                 // Handle ticket and invoice buttons
                 const ticketsBtn = document.querySelector('.view-tickets-btn');

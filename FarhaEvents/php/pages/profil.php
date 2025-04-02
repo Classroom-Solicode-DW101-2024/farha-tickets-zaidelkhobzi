@@ -2,7 +2,6 @@
     session_start();
     require_once "../config/connectDB.php";
 
-    // Check if user is logged in
     if (!isset($_SESSION["user"]["user_id"])) {
         header("Location: login.php");
         exit();
@@ -10,7 +9,6 @@
 
     $userId = $_SESSION["user"]["user_id"];
 
-    // Fetch user info
     $queryUser = "SELECT nomUser, prenomUser, mailUser FROM utilisateur WHERE idUser = :userId";
     $stmtUser = $pdo->prepare($queryUser);
     $stmtUser->bindParam(":userId", $userId);
@@ -24,7 +22,6 @@
         die("Erreur: Utilisateur non trouvé.");
     }
 
-    // Update user info if form submitted
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["update_info"])) {
         $nom = $_POST["nom"];
         $prenom = $_POST["prenom"];
@@ -45,7 +42,6 @@
         }
     }
 
-    // Fetch purchase history
     $queryPurchases = "
         SELECT r.idReservation AS invoice_ref, e.dateEvent AS purchase_date, 
             (r.qteBilletsNormal * ev.TariffNormal + r.qteBilletsReduit * ev.TariffReduit) AS total_paid

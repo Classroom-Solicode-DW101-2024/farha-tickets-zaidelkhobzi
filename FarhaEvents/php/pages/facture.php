@@ -2,7 +2,6 @@
     session_start();
     require_once("../config/connectDB.php");
 
-    // Check if user is logged in and eventId is provided
     if (!isset($_SESSION["user"]) || !isset($_GET["eventId"])) {
         echo "<p>Aucun billet trouvé, utilisateur non connecté, ou événement non spécifié.</p>";
         exit;
@@ -11,7 +10,6 @@
     $eventId = $_GET["eventId"];
     $userId = $_SESSION["user"]["user_id"];
 
-    // Fetch ticket data from the database
     $query = "
         SELECT 
             ev.eventTitle,
@@ -44,14 +42,12 @@
         exit;
     }
 
-    // Fetch user details
     $query = "SELECT nomUser, mailUser FROM utilisateur WHERE idUser = :idUser";
     $stmt = $pdo->prepare($query);
     $stmt->bindParam(":idUser", $userId);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Prepare ticket data for display
     $tickets = [];
     foreach ($facture as $row) {
         if ($row["quantityNormal"] > 0) {
