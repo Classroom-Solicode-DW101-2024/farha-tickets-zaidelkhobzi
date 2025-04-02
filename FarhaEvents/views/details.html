@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Événements</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/details.css">
+</head>
+<body>
+    <header>
+    <a href="./accueil.php" style="text-decoration: none;"><h1 class="logo">farhaEvents</h1></a>
+        <nav>
+            <ul>
+                <a href="./accueil.php"><li>Accueil</li></a>
+                <a href="../pages/profil.php"><li>Mon profile</li></a>
+                <a href="./login.php"><li>Se connecter</li></a>
+            </ul>
+        </nav>
+    </header>
+    <?php foreach($events as $event) : ?>
+        <h1 class="title"><?= htmlspecialchars($event["eventTitle"]); ?></h1>
+        <div class="container">
+            <div class="event-image-container">
+                <img src="<?= htmlspecialchars($event["image"]); ?>">
+            </div>
+            <div class="event-content">
+                <div class="info-event">
+                    <div class="event-date">
+                        <h3><?= htmlspecialchars($event["dateEvent"]); ?></h3>
+                    </div>
+                    <p>Ouverture des portes à <?= htmlspecialchars($event["timeEvent"]); ?></p>
+                </div>
+                <div class="purchase-section">
+                    <form method="POST">
+                        <input type="hidden" name="eventId" value="<?= htmlspecialchars($event["eventId"]); ?>">
+                        <input type="hidden" name="dateEvent" value="<?= htmlspecialchars($event["dateEvent"]); ?>">
+                        <input type="hidden" name="timeEvent" value="<?= htmlspecialchars($event["timeEvent"]); ?>">
+                        <input type="hidden" name="numSalle" value="<?= htmlspecialchars($event["NumSalle"]); ?>">
+                        <input type="hidden" name="ticketType" id="ticketType" value="Type normal">
+                        <input type="hidden" name="ticketPrice" id="ticketPrice" value="<?= htmlspecialchars($event["TariffNormal"]) ? htmlspecialchars($event["TariffNormal"]) : htmlspecialchars($event["TariffReduit"]); ?>">
+                        
+                        <div class="quantity-container">
+                            <div class="select-box--container">
+                                <div class="select-box--selected-item">Type normal<span style="margin-right: 20px; color: #6C63FF;"><?= htmlspecialchars($event["TariffNormal"]); ?></span></div>
+                                <div class="select-box--arrow"><i class="fas fa-chevron-down"></i></div>
+                                <div class="select-box--items hidden">
+                                    <div class="selected" data-type="Type normal" data-price="<?= htmlspecialchars($event["TariffNormal"]); ?>">Type normal<span style="margin-right: 20px; color: #6C63FF;"><?= htmlspecialchars($event["TariffNormal"]); ?></span></div>
+                                    <div data-type="Type réduit" data-price="<?= htmlspecialchars($event["TariffReduit"]); ?>">Type réduit<span style="margin-right: 20px; color: #6C63FF;"><?= htmlspecialchars($event["TariffReduit"]); ?></span></div>
+                                </div>
+                            </div>
+
+                                <?php
+                                    // $eventId = $_POST["eventId"];
+
+                                    $query = "SELECT edition.eventId, edition.NumSalle, salle.capSalle, (salle.capSalle - COALESCE(SUM(reservation.qteBilletsNormal + reservation.qteBilletsReduit), 0)) AS availableCapacity
+                                    FROM edition
+                                    LEFT JOIN salle ON edition.NumSalle = salle.NumSalle
+                                    LEFT JOIN reservation ON edition.editionId = reservation.editionId
+                                    WHERE edition.eventId = :eventId
+                                    GROUP BY edition.editionId, edition.eventId, edition.NumSalle, salle.capSalle";
+                    
+                                    $stmt = $pdo->prepare($query);
+                                    $stmt->bindParam(":eventId", $eventId);
+                                    $stmt->execute();
+                                    $capacityData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                    $numSalle = $capacityData["NumSalle"] ?? null;
+                                    
+                                    if ($capacityData) {
+                                        $capSalle = $capacityData['capSalle'];
+                                        $max_quantity = $capSalle; // Or some other reasonable limit
+                                    } else {
+                                        $max_quantity = 0; // Default fallback
+                                    }
+                                ?>
+                                
+                                <div class="quantity-controls">
+                                    <label for="cart-quantity">Quantité:</label>
+                                    <div class="quantity-input-group">
+                                        <button type="button" class="quantity-btn decrease-btn">-</button>
+                                        <?php if (isset($_GET['success']) && $_GET['success'] == 1 && !empty($_SESSION["user"]["tickets"])): 
+                                            $latestPurchase = end($_SESSION["user"]["tickets"]);
+                                            $quantity = htmlspecialchars($latestPurchase["quantity"]);
+                                        ?>
+                                        <?php else: $quantity = 1; ?>
+                                        <?php endif; ?>
+                                        <input type="number" id="cart-quantity" name="quantity" value="<?= $quantity ?>" min="1" max="<?= $capSalle ?>" step="1">
+                                        <button type="button" class="quantity-btn increase-btn">+</button>
+                                    </div>
+                                    <?php if ($capSalle > 0): ?>
+                                        <!-- <p>Capacité maximale de la salle : <?= $capSalle ?> places</p> -->
+                                    <?php else: ?>
+                                        <p>Événement non trouvé ou capacité indisponible.</p>
+                                    <?php endif; ?>
+                                </div>
+                        </div>
+                        
+                        <div class="button-container">
+                            <button type="submit" class="i-button" name="valider">Acheter maintenant</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="urgent-message">
+                    Vite !! Achetez rapidement vos tickets
+                </div>
+            </div>
+        </div>
+        <div class="description">
+            <h1>Description</h1>
+            <p><?= htmlspecialchars($event["eventDescription"]); ?></p>
+        </div>
+        <?php if (isset($_GET['success']) && $_GET['success'] == 1 && !empty($_SESSION["user"]["tickets"])): 
+            $latestPurchase = end($_SESSION["user"]["tickets"]);
+        ?>
+        <div class="popup active">
+            <div class="confirmation-header">
+                <h2>Confirmation d'achat</h2>
+                <button class="close-btn">×</button>
+            </div>
+            <div class="confirmation-content">
+                <p>Merci pour votre achat!</p>
+                <div class="confirmation-details">
+                    <p><strong>Type de billet:</strong> <?= htmlspecialchars($latestPurchase["ticketType"]) ?></p>
+                    <p><strong>Prix unitaire:</strong> <?= htmlspecialchars($latestPurchase["ticketPrice"]) ?></p>
+                    <p><strong>Quantité:</strong> <?= htmlspecialchars($latestPurchase["quantity"]) ?></p>
+                    <p><strong>Total:</strong> <?= htmlspecialchars($latestPurchase["total"]) ?></p>
+                </div>
+                <div class="confirmation-actions">
+                    <a href="ticket.php"><button class="view-tickets-btn">Voir mes billets</button></a>
+                    <a href="facture.php?eventId=<?= urlencode($eventId) ?>"><button class="view-invoice-btn">Voir la facture</button></a>
+                </div>
+            </div>
+        </div>
+        <?php 
+            // Clear the session data after displaying the popup
+            // unset($_SESSION['purchase']);
+            endif; 
+        ?>
+    <?php endforeach ?>
+
+    <script>
+        // Toggle dropdown
+        document.querySelector('.select-box--selected-item').addEventListener('click', function() {
+            const items = document.querySelector('.select-box--items');
+            const arrow = document.querySelector('.select-box--arrow');
+            items.classList.toggle('hidden');
+            arrow.classList.toggle('open');
+
+            document.querySelector(".selected span").style.marginRight = "20px";
+            document.querySelector(".select-box--selected-item span").style.marginRight = "20px";
+        });
+
+        // Toggle dropdown
+        document.querySelector('.select-box--arrow').addEventListener('click', function() {
+            const items = document.querySelector('.select-box--items');
+            const arrow = document.querySelector('.select-box--arrow');
+            items.classList.toggle('hidden');
+            arrow.classList.toggle('open');
+
+            document.querySelector(".selected span").style.color = "#6C63FF";
+            document.querySelector(".select-box--selected-item span").style.marginRight = "20px";
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const container = document.querySelector('.select-box--container');
+            if (!container.contains(event.target)) {
+                document.querySelector('.select-box--items').classList.add('hidden');
+                document.querySelector('.select-box--arrow').classList.remove('open');
+            }
+        });
+
+        // Handle ticket type selection
+        document.querySelectorAll('.select-box--items div').forEach(item => {
+            item.addEventListener('click', function() {
+                // Update displayed selection
+                const ticketType = this.getAttribute('data-type');
+                const ticketPrice = this.getAttribute('data-price');
+                document.querySelector('.select-box--selected-item').innerHTML = 
+                    `${ticketType}<span>${ticketPrice} MAD</span>`;
+                
+                // Update hidden form fields
+                document.getElementById('ticketType').value = ticketType;
+                document.getElementById('ticketPrice').value = ticketPrice;
+                
+                // Mark selected item
+                document.querySelectorAll('.select-box--items div').forEach(el => {
+                    el.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                
+                // Hide dropdown after selection
+                document.querySelector('.select-box--items').classList.add('hidden');
+                document.querySelector('.select-box--arrow').classList.remove('open');
+            });
+        });
+
+        // Quantity buttons functionality
+        const quantityInput = document.getElementById('cart-quantity');
+
+        document.querySelector('.decrease-btn').addEventListener('click', function() {
+            if (quantityInput.value > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+            }
+        });
+
+        document.querySelector('.increase-btn').addEventListener('click', function() {
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+        });
+
+        // Ensure quantity input only accepts numbers greater than or equal to 1
+        quantityInput.addEventListener('input', function() {
+            let value = parseInt(this.value);
+            if (isNaN(value) || value < 1) {
+                this.value = 1;
+            }
+        });
+
+        // Handle popup display
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show popup if it exists and if the form was submitted
+            const popup = document.querySelector('.popup');
+            if (popup) {
+                // Make popup visible
+                popup.classList.add('active');
+                
+                // Close popup when clicked on X button
+                document.querySelector('.close-btn').addEventListener('click', function() {
+                    popup.classList.remove('active');
+                });
+                // window.addEventListener('click', function() {
+                //     popup.classList.remove('active');
+                // });
+                
+                // Handle ticket and invoice buttons
+                const ticketsBtn = document.querySelector('.view-tickets-btn');
+                const invoiceBtn = document.querySelector('.view-invoice-btn');
+                
+                if (ticketsBtn) {
+                    ticketsBtn.addEventListener('click', function() {
+                        // Handle viewing tickets
+                        console.log('View tickets clicked');
+                        // Add your redirect or action here
+                    });
+                }
+                
+                if (invoiceBtn) {
+                    invoiceBtn.addEventListener('click', function() {
+                        // Handle viewing invoice
+                        console.log('View invoice clicked');
+                        // Add your redirect or action here
+                    });
+                }
+            }
+
+            // Prevent manual input exceeding max
+            input.addEventListener('input', function() {
+                let value = parseInt(input.value);
+                if (value > maxCapacity) {
+                    input.value = maxCapacity;
+                } else if (value < minValue || isNaN(value)) {
+                    input.value = minValue;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

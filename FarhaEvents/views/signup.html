@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <!-- <link rel="stylesheet" href="../../css/mvp.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"> -->
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
+</head>
+<body>
+    <header>
+        <a href="./accueil.php" style="text-decoration: none;"><h1 class="logo">farhaEvents</h1></a>
+        <nav>
+            <ul>
+                <a href="./accueil.php"><li>Accueil</li></a>
+                <a href="../pages/profile.php"><li>Mon profile</li></a>
+                <a href="./login.html"><li>Se connecter</li></a>
+            </ul>
+        </nav>
+        <a href="login.php"><button type="submit">Login</button></a>
+    </header>
+
+    <h2>Signup Form</h2>
+
+    <form action="" method="POST">
+        <div>
+            <label for="nom_user">Nom:</label>
+            <input type="text" id="nom_user" name="nom_user" required>
+        </div>
+
+        <div>
+            <label for="prenom_user">Prénom:</label>
+            <input type="text" id="prenom_user" name="prenom_user" required>
+        </div>
+
+        <div>
+            <label for="email_user">Email:</label>
+            <input type="email" id="email_user" name="email_user" required>
+        </div>
+
+        <div>
+            <label for="pass_user">Password:</label>
+            <input type="password" id="pass_user" name="pass_user" required>
+        </div>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+</body>
+</html>

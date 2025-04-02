@@ -1,0 +1,19 @@
+<div class="popup active">
+    <div class="confirmation-header">
+        <h2>Confirmation d'achat</h2>
+        <button class="close-btn">×</button>
+    </div>
+    <div class="confirmation-content">
+        <p>Merci pour votre achat!</p>
+        <div class="confirmation-details">
+            <p><strong>Type de billet:</strong> <?= htmlspecialchars($latestPurchase["ticketType"]) ?></p>
+            <p><strong>Prix unitaire:</strong> <?= htmlspecialchars($latestPurchase["ticketPrice"]) ?></p>
+            <p><strong>Quantité:</strong> <?= htmlspecialchars($latestPurchase["quantity"]) ?></p>
+            <p><strong>Total:</strong> <?= htmlspecialchars($latestPurchase["total"]) ?></p>
+        </div>
+        <div class="confirmation-actions">
+            <a href="ticket.php"><button class="view-tickets-btn">Voir mes billets</button></a>
+            <a href="facture.php?eventId=<?= urlencode($eventId) ?>"><button class="view-invoice-btn">Voir la facture</button></a>
+        </div>
+    </div>
+</div>

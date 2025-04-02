@@ -1,0 +1,674 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.lato-thin {
+    font-family: "Lato", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}    
+.lato-light {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+.lato-regular {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.lato-bold {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+.lato-black {
+    font-family: "Lato", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+.lato-thin-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+.lato-light-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+.lato-regular-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+.lato-bold-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+.lato-black-italic {
+    font-family: "Lato", sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
+
+[type=submit], button {
+    padding: 0;
+    margin: 0;
+}
+
+input:not([type=checkbox],[type=radio],[type=range],[type=file]):is([type=date],[type=datetime-local],[type=month],[type=time],[type=week]) {
+    background-image: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    margin-right: 0;
+}
+
+/**** accueil *****/
+
+/* Header styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logo styling */
+header .logo {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #071A35;
+    margin: 0;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+/* Form */
+form {
+    display: flex;
+}
+
+/* Search input styling */
+header input[type="text"] {
+    margin: 0;
+    font-size: .8rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    background: #efefef url(../images/search-interface-symbol.png) right 15px center no-repeat;
+    background-size: 18px;
+    border: 1px solid #c9c9c9;
+    border-radius: 35px;
+    box-shadow: inset 0 0 4px #c9c9c9;
+    color: black;
+    font-weight: 500;
+    height: 45px;
+    line-height: 36px;
+    padding-left: 15px;
+    padding-right: 48px;
+    width: 300px;
+}
+
+header input[type="text"]:focus {
+    border-color: #0056b3;
+}
+
+/* Search btn */
+header form button,
+header form [type=submit] {
+    padding: 9px;
+    width: 120px;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+/* Navigation styling */
+/* header nav {
+    margin-left: auto;
+} */
+
+header nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul div {
+    margin-left: 20px;
+}
+
+header nav ul div a {
+    text-decoration: none;
+    color: #333;
+    font-size: .75em;
+    transition: color 0.3s ease;
+}
+
+header nav ul div a:hover {
+    color: #007bff;
+}
+
+header nav ul div li {
+    list-style: none;
+    margin: 0;
+    /* padding: 5px 10px; */
+    cursor: pointer;
+}
+
+/* Filter */
+header .filter-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    box-shadow: -1px 1px 17px -2px rgba(0,0,0,0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+header .filter-icon img {
+    width: 20px;
+}
+
+/* Filter container styling */
+.filter-cat {
+    background-color: #ffffff;
+    position: absolute;
+    top: 98px;
+    right: 30px;
+    width: 280px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    z-index: 999;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    border: 1px solid #e0e0e0;
+}
+
+/* Show the filter when active */
+.filter-cat.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Filter section styling */
+.filter-section {
+    margin-bottom: 20px;
+}
+
+/* Filter header styling */
+.filter-section-title {
+    color: #071A35;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+}
+
+/* Category styling */
+.filter-cat h3 {
+    font-size: 14px;
+    color: #333;
+    padding: 10px 12px;
+    margin: 5px 0;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.filter-cat h3:hover {
+    background-color: #e9f0fc;
+    color: #007bff;
+}
+
+.filter-cat h3.selected {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Add checkbox styling for categories */
+.filter-cat h3::before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    border: 1px solid #c9c9c9;
+    border-radius: 3px;
+    background-color: white;
+    vertical-align: middle;
+}
+
+.filter-cat h3.selected::before {
+    background-color: #007bff;
+    border-color: #007bff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10px;
+}
+
+/* Date range inputs styling */
+.date-range {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.date-input {
+    position: relative;
+}
+
+.date-input label {
+    display: block;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.date-input input[type="date"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #c9c9c9;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    background-color: #f5f5f5;
+    outline: none;
+}
+
+.date-input input[type="date"]:focus {
+    border-color: #007bff;
+    background-color: #e9f0fc;
+}
+
+/* Apply button styling */
+.filter-cat .apply-filters {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+    transition: background-color 0.2s ease;
+}
+
+.filter-cat .apply-filters:hover {
+    background-color: #0056b3;
+}
+
+/* Clear filters link */
+.filter-cat .clear-filters {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+    text-decoration: underline;
+    cursor: pointer;
+    display: block;
+}
+
+.filter-cat .clear-filters:hover {
+    color: #333;
+}
+
+/* Add animation for the filter icon */
+.filter:hover {
+    background-color: #f0f7ff;
+}
+
+.filter.active {
+    background-color: #e1ecf7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .filter-cat {
+        width: calc(100% - 60px);
+        right: 15px;
+    }
+}
+
+/* Modern Filter Form Styles */
+.filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    background: linear-gradient(to right, #f8f9fa, #e9ecef);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 20px auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input[type="date"] {
+    background-image: none;
+}
+
+.filter select,
+.filter input[type="date"] {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #495057;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filter select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.filter select:focus,
+.filter input[type="date"]:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+
+.filter select option {
+    padding: 10px;
+}
+
+.filter button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter .appliquer {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.filter .appliquer:hover {
+    background-color: #0b5ed7;
+    transform: translateY(-2px);
+}
+
+.filter .nettoyer {
+    background-color: #6c757d;
+    color: white;
+}
+
+.filter .nettoyer:hover {
+    background-color: #5c636a;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .filter {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .filter select,
+    .filter input[type="date"],
+    .filter button {
+        width: 100%;
+        min-width: unset;
+    }
+}
+  
+/* Additional styling for date inputs to make them consistent across browsers */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0.7;
+    cursor: pointer;
+}
+  
+input[type="date"]::-webkit-inner-spin-button {
+    display: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    header .logo {
+        margin-bottom: 15px;
+    }
+
+    header input[type="text"] {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    header nav ul div {
+        margin-left: 0;
+        margin-bottom: 10px;
+    }
+
+    header nav ul div a {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    header nav ul div a:last-child {
+        border-bottom: none;
+    }
+}
+
+/* Custom Select Styling */
+select {
+    appearance: none;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 12px 40px 12px 15px;
+    width: 100%;
+    max-width: 350px;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23007bff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+select:hover {
+    border-color: #007bff;
+    box-shadow: 0 3px 8px rgba(0, 123, 255, 0.1);
+}
+
+select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+
+/* Option styling */
+option {
+    padding: 12px;
+    font-size: 0.95rem;
+}
+
+/* Styling for the select container */
+.select-container {
+    position: relative;
+    margin: 15px 0;
+}
+
+.select-container label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+/* Styling for the category filter section */
+.category-filter {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.category-filter h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #071A35;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* For smaller screens */
+@media (max-width: 768px) {
+    select {
+        max-width: 100%;
+    }
+}
+
+/* Cards container */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: center;
+}
+  
+/* Individual card */
+.card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+  
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Card image */
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+}
+
+/* Card content */
+.card h3 {
+    color: #6c5ce7;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 1rem 1rem 0.5rem;
+}
+
+.card h4 {
+    color: #2d3436;
+    font-size: 1.2rem;
+    margin: 0 1rem 0.5rem;
+    line-height: 1.4;
+}
+
+.card h6 {
+    color: #636e72;
+    font-size: 0.9rem;
+    margin: 0 1rem 1.5rem;
+    font-weight: 400;
+}
+
+/* Button styling */
+.card button {
+    margin: auto 1rem 1.5rem 1rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+.card button:hover {
+    background-color: #5649c0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .cards {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .card img {
+        height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        padding: 1rem;
+    }
+}
